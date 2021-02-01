@@ -54,6 +54,7 @@ class Lotto extends Component {
         const { winBalls, bonus, redo } = this.state;
         return (
             <>
+                <h1>Lotto numbers Generator</h1>
                 <div>Win Numbers</div>
                 <div id="result">
                     {winBalls.map((v) =><Ball key={v} number={v} />)}
