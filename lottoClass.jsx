@@ -22,10 +22,7 @@ class Lotto extends Component {
 
     timeouts = [];
 
-// 만약 부모component가 자식component를 삭제햇는데, 자식component안에 setTimeout이나
-// setinterval를 삭제 안 해주면 메모리 문제가 오류가 생김.
-// 그래서 꼭 componentWillUnmount에서 clearTimeout를 해줘야 함.
-    componentDidMount() {
+    runTimeouts = () => {
         const { winNumbers } = this.state;
         for(let i =0; i < winNumbers.length-1; i++ ) {
             this.timeouts[i] = setTimeout(() => {
@@ -44,24 +41,16 @@ class Lotto extends Component {
         }, 7000);
     }
 
+// 만약 부모component가 자식component를 삭제햇는데, 자식component안에 setTimeout이나
+// setinterval를 삭제 안 해주면 메모리 문제가 오류가 생김.
+// 그래서 꼭 componentWillUnmount에서 clearTimeout를 해줘야 함.
+    componentDidMount() {
+        this.runTimeouts();
+    }
+
     componentDidUpdate(prevProps, prevState) {
-        if(this.winBalls.length === 0) {
-            const { winNumbers } = this.state;
-            for(let i =0; i < winNumbers.length-1; i++ ) {
-                this.timeouts[i] = setTimeout(() => {
-                    this.setState((prevState) => {
-                        return{
-                            winBalls: [...prevState.winBalls, winNumbers[i]],
-                        };                   
-                    });
-                }, 1000 * (i+1));
-            }
-            this.timeouts[6] =setTimeout(()=> {
-                this.setState({
-                    bonus : winNumbers[6],
-                    redo : true,
-                });            
-            }, 7000);
+        if(this.state.winBalls.length === 0) {
+            this.runTimeouts();
         }
     }
 
