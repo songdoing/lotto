@@ -20,13 +20,36 @@ const Lotto = () => {
     const [redo, setRedo] = useState(false);
     const timeouts = useRef([]);
 
+    useEffect(() => {
+        console.log('useEffect');
+        for(let i =0; i < winNumbers.length-1; i++ ) {
+            timeouts.current[i] = setTimeout(() => {
+                setWinBalls((prevBalls) => [...prevBalls, winNumbers[i]]);
+            }, 1000 * (i+1));
+        }
+        timeouts.current[6] =setTimeout(()=> {
+            setBonus(winNumbers[6]);
+            setRedo(true);           
+        }, 7000);
+        //return을 써주면 componentWillUnmount 실행
+        return () => {
+            timeouts.current.forEach((v) => {
+                clearTimeout(v);
+            });
+        };
+    }, [timeouts.current]); //배열의 요소가 바뀌는 시점에 compoentnDidUpdate실행
+    //lottoClass.jsx처럼 winBalls.length === 0 하게 되면 useEffect가 2번 실행되어..ㅠㅠ
+    //componentDidUpdate의 요소를 class컴퍼넌트와 같지 않을수도있다.
+    //두번째 인자가 빈배열이면, componentDidMount와 동일
+    //빈배열에 요소가 있으면, componentDidMount와 componentDidUpdate둘다
+
     const onClickRedo = () => {
         console.log('clickRedo');
         setWinNumbers(getWinNumbers());
         setWinBalls([]);
         setBonus(null);
         setRedo(false);
-        timeouts.current = [];
+        timeouts.current = []; //timeouts.current가 바뀌는 시점
     };
     
     return (
