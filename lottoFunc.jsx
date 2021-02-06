@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Ball from './ball';
 
 function getWinNumbers() {
@@ -14,7 +14,11 @@ function getWinNumbers() {
 }
 
 const Lotto = () => {
-    const [winNumbers, setWinNumbers] = useState(getWinNumbers());
+    //rendering 될때마다 getWinNumbers가 계속 실행됨..그래서 useMemo를 사용
+    //return하는 값을 기억해둘수 있다, 두번째인자(배열)가 바뀌지 않는한 getWinNumbers는 다시실행 않는다
+    const lottoNumbers = useMemo(() => getWinNumbers(), []);
+    // const [winNumbers, setWinNumbers] = useState(getWinNumbers());
+    const [winNumbers, setWinNumbers] = useState(lottoNumbers);
     const [winBalls, setWinBalls] = useState([]);
     const [bonus, setBonus] = useState(null);
     const [redo, setRedo] = useState(false);
