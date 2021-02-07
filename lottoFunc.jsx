@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallBack } from 'react';
 import Ball from './ball';
 
 function getWinNumbers() {
@@ -47,14 +47,14 @@ const Lotto = () => {
     //두번째 인자가 빈배열이면, componentDidMount와 동일
     //빈배열에 요소가 있으면, componentDidMount와 componentDidUpdate둘다
 
-    const onClickRedo = () => {
+    const onClickRedo = useCallBack(() => {
         console.log('clickRedo');
         setWinNumbers(getWinNumbers());
         setWinBalls([]);
         setBonus(null);
         setRedo(false);
         timeouts.current = []; //timeouts.current가 바뀌는 시점
-    };
+    }, [winNumbers]);
     
     return (
         <>
