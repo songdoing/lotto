@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo, useCallBack } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Ball from './ball';
 //useMemo는 함수의 리턴값을 기억한다, 두번째 인자 바뀌기 전까지
 //useEffect는 componentDidMount때 무조건 실행되고, 두번째 인자가 바뀔때, componentDidUpdate처럼 다시실행한다(여러번 쓰도됨)
@@ -69,8 +69,8 @@ const Lotto = () => {
         console.log('lotto numbers generated.');
     }, [winNumbers]);
     
-    //useCallBack은 함수자체를 기억하는 것.
-    const onClickRedo = useCallBack(() => {
+    //useCallback 함수자체를 기억하는 것.
+    const onClickRedo = useCallback(() => {
         console.log('clickRedo');
         setWinNumbers(getWinNumbers());
         setWinBalls([]);
@@ -90,7 +90,7 @@ const Lotto = () => {
                 {winBalls.map((v) =><Ball key={v} number={v} />)}
             </div>
             <div>Bonus!</div>
-            {bonus && <Ball number={bonus}/>}
+            {bonus && <Ball number={bonus} onClick={onClickRedo}/>}
             {redo && <button onClick={onClickRedo}>Try again!</button>}
         </>
     );
