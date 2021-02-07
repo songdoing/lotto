@@ -48,13 +48,19 @@ class Lotto extends Component {
     componentDidMount() {
         console.log('didMount');
         this.runTimeouts();
+        console.log('lotto numbers generated.');
     }
-
+//class에서는 componentDidUpdate에 한꺼번에 써주지만,
+//function에서는 두개의 useEffect를 써야함
     componentDidUpdate(prevProps, prevState) {
         console.log('didUpdate');
         //this.state.winBalls.lengths === 0 조건해도 됨.
         if(this.timeouts.length === 0) {
             this.runTimeouts();
+        }
+
+        if(prevState.winNumbers !== this.state.winNumbers) {
+            console.log('lotto numbers generated.');
         }
     }
 
